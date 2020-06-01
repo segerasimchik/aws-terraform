@@ -69,3 +69,4 @@ resource "aws_instance" "host_1" {
       Name = "Server"
     }
   }
+  
