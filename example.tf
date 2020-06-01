@@ -60,13 +60,15 @@ resource "aws_security_group" "ssh" {
 
 ########## End of network description ##########
 
+########## EC2_instance ##########
+
 resource "aws_instance" "host_1" {
     ami = "ami-08c757228751c5335"
     instance_type = "t2.micro"
     subnet_id = aws_subnet.my_vpc.id
     security_groups = ["${aws_security_group.ssh.id}"]
+    key_name = var.key_name
     tags = {
-      Name = "Server"
+      Name = "host_1"
     }
   }
-  
