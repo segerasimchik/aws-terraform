@@ -34,15 +34,31 @@ resource "aws_main_route_table_association" "tab" {
     route_table_id = aws_route_table.my.id
 }
 
-resource "aws_subnet" "my_vpc" {
+##### First subnet #####
+
+resource "aws_subnet" "my_sub" {
     vpc_id = aws_vpc.my_vpc.id
     cidr_block = "10.1.10.0/24"
     map_public_ip_on_launch = true
+    availability_zone = "eu-west-3a"
     tags = {
       Name = "From Terraform"
     }
 }
 
+##### Second subnet ######
+
+resource "aws_subnet" "my_sec_sub" {
+    vpc_id = aws_vpc.my_vpc.id
+    cidr_block = "10.1.20.0/24"
+    #map_public_ip_on_launch = true
+    availability_zone = "eu-west-3b"
+    tags = {
+      Name = "From Terraform With Love"
+    }
+}
+
+##### SG allow ssh ####
 resource "aws_security_group" "ssh" {
     name = "Just SSH"
     vpc_id = aws_vpc.my_vpc.id
@@ -61,17 +77,33 @@ resource "aws_security_group" "ssh" {
     }
 }
 
+
 ########## End of network description ##########
 
 ########## EC2_instance ##########
 
+##### First instance #####
+
 resource "aws_instance" "host_1" {
     ami = "ami-08c757228751c5335"
     instance_type = "t2.micro"
-    subnet_id = aws_subnet.my_vpc.id
+    subnet_id = aws_subnet.my_sub.id
     security_groups = ["${aws_security_group.ssh.id}"]
     key_name = var.key_name
     tags = {
       Name = "host_1"
+    }
+  }
+
+##### Second instance #####
+
+resource "aws_instance" "host_2" {
+    ami = "ami-08c757228751c5335"
+    instance_type = "t2.micro"
+    subnet_id = aws_subnet.my_sec_sub.id
+    security_groups = ["${aws_security_group.ssh.id}"]
+    key_name = var.key_name
+    tags = {
+      Name = "host_2"
     }
   }
