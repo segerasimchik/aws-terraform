@@ -5,3 +5,7 @@ variable "region" {
 variable "profile" {
   default = "my"
 }
+
+variable "key_name" {
+  default = "regular"
+}
