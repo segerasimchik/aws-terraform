@@ -24,6 +24,9 @@ resource "aws_route_table" "my" {
       cidr_block = "0.0.0.0/0"
       gateway_id = aws_internet_gateway.my_gw.id
     }
+    tags = {
+      Name = "My Route table"
+    }
 }
 
 resource "aws_main_route_table_association" "tab" {
