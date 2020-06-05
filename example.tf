@@ -142,6 +142,9 @@ resource "aws_instance" "host_1" {
     }
 }
 
+output "ip" {
+  value = aws_instance.host_1.public_ip
+}
 ##### Instance with just privateIP #####
 
 resource "aws_instance" "host_2" {
